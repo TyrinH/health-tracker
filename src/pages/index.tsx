@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 
 import { api } from "~/utils/api";
 
@@ -25,11 +25,10 @@ const Home: NextPage = () => {
     handleSubmit,
     watch,
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     data.author = sessionData?.user?.name || "Anonymous";
     data.authorId = sessionData?.user?.id || "Anonymous";
-    createEntry.mutate(data);
-    console.log(data);
+    await createEntry.mutateAsync(data).catch((err) => console.error(err));
   };
 
   console.log(watch("mood")); // watch input value by passing the name of it
