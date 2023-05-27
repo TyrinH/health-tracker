@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { type NextPage } from "next";
 import Head from "next/head";
 import { signIn, signOut, useSession } from "next-auth/react";
@@ -25,10 +26,11 @@ const Home: NextPage = () => {
     handleSubmit,
     watch,
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
     data.author = sessionData?.user?.name || "Anonymous";
     data.authorId = sessionData?.user?.id || "Anonymous";
-    await createEntry.mutateAsync(data).catch((err) => console.error(err));
+    createEntry.mutate(data);
+    return
   };
 
   console.log(watch("mood")); // watch input value by passing the name of it
