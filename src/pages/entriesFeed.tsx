@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
+import { LoadingPageSpinner } from "~/components/loading";
 import { type RouterOutputs, api } from "~/utils/api";
 
 
@@ -12,16 +13,15 @@ const EntriesFeed: NextPage = () => {
 if (!sessionData) return null;
 const allEntries = api.entries.getAllEntries.useQuery();
 
-  console.log(allEntries);
+if (allEntries.isLoading) return <LoadingPageSpinner />;
+if (allEntries.isError) return <p>Error!</p>;
 
     type Entry = RouterOutputs["entries"]["getAllEntries"][number]
 
   const Card = (entry: Entry) => {
 
     const moodColor = () => {
-        console.log('ENTRY:', entry)
         if (entry.mood === "Happy") {
-            console.log('COLOR:', moodColor)
             return "text-green-500";
         } else if (entry.mood === "Meh") {
             return "text-yellow-500";

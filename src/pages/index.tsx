@@ -5,11 +5,11 @@ import { useSession } from "next-auth/react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 import { api } from "~/utils/api";
+import router from "next/router";
 
 const Home: NextPage = () => {
   const createEntry = api.entries.createEntry.useMutation();
   const { data: sessionData } = useSession();
-  console.log(sessionData);
 
   type Inputs = {
     mood: string;
@@ -17,22 +17,22 @@ const Home: NextPage = () => {
     notes: string;
     author: string;
     authorId: string;
-    exampleRequired: string;
   };
 
   const {
     register,
     handleSubmit,
-    watch,
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     data.author = sessionData?.user?.name || "Anonymous";
     data.authorId = sessionData?.user?.id || "Anonymous";
-    createEntry.mutate(data);
-    return
+    await createEntry.mutateAsync(data);
+    if (createEntry.isSuccess) {
+      await router.push("/entriesFeed");
+    } else {
+      console.log("Error");
+    }
   };
-
-  console.log(watch("mood")); // watch input value by passing the name of it
 
   return (
     <>
