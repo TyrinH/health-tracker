@@ -1,3 +1,6 @@
+import { faFaceFrown, faFaceMeh, faFaceSmile } from "@fortawesome/free-regular-svg-icons";
+import { faHeadSideCough } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
@@ -20,23 +23,44 @@ if (allEntries.isError) return <p>Error!</p>;
 
   const Card = (entry: Entry) => {
 
-    const moodColor = () => {
+    const moodEmoji = () => {
         if (entry.mood === "Happy") {
-            return "text-green-500";
+            return (
+              <FontAwesomeIcon
+                icon={faFaceSmile}
+                size="2xl"
+                style={{ color: "#1cf000" }}
+              />
+            );
+
         } else if (entry.mood === "Meh") {
-            return "text-yellow-500";
+            return (
+              <FontAwesomeIcon
+                icon={faFaceMeh}
+                size="2xl"
+                style={{ color: "#ffe438" }}
+              />
+            );
         } else if (entry.mood === "Sad") {
-            return "text-red-500";
+            return (
+              <FontAwesomeIcon
+                icon={faFaceFrown}
+                size="2xl"
+                style={{ color: "#ff0000" }}
+              />
+            );
         } else {
             return "text-gray-500";
         }
     }
 
-    const sickEmoji = () => {
-        if (entry.isSick === true) {
-            return "😷";
-        } else {
-            return "😊";
+    const moodStyleColor = () => {
+        if (entry.mood === "Happy") {
+            return "text-green-500";
+        } else if (entry.mood === "Meh") {
+            return "text-yellow-300";
+        } else if (entry.mood === "Sad") {
+            return "text-red-600";
         }
     }
 
@@ -47,13 +71,15 @@ if (allEntries.isError) return <p>Error!</p>;
             {entry.date.toDateString()}
           </p>
           <p className="card-header inline-block px-4 py-4 text-2xl font-bold">
-            {sickEmoji()}
+            {moodEmoji()}
           </p>
+          {entry.isSick && <p className="card-header inline-block px-4 py-4 text-2xl font-bold">
+          <FontAwesomeIcon icon={faHeadSideCough} size="2xl" style={{color: "#bababa",}} />
+          </p>}
         </div>
         <div className="card-body">
-          <h2 className="card-title">
-            Your mood today was:{" "}
-            <span className={moodColor()}>{entry.mood}</span>
+          <h2 className="card-title text-3xl">
+            <span className={moodStyleColor()}>{entry.mood}</span>
           </h2>
           <p>{entry.notes}</p>
           <div className="card-actions justify-end">
