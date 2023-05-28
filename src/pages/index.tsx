@@ -27,11 +27,7 @@ const Home: NextPage = () => {
     data.author = sessionData?.user?.name || "Anonymous";
     data.authorId = sessionData?.user?.id || "Anonymous";
     await createEntry.mutateAsync(data);
-    if (createEntry.isSuccess) {
-      await router.push("/entriesFeed");
-    } else {
-      console.log("Error");
-    }
+    await router.push("/entriesFeed");
   };
 
   return (
