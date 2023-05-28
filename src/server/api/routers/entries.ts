@@ -2,17 +2,23 @@ import { z } from "zod";
 
 import {
   createTRPCRouter,
-  publicProcedure,
+  // publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
 
 export const entriesRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
+  getAllEntries: protectedProcedure
+    .query(async ({ ctx }) => {
+      const entries = await ctx.prisma.entries.findMany({
+        where: {
+          authorId: ctx.session.user.id
+        },
+        orderBy: {
+          date: 'desc'
+        }
+      });
+      return entries;
+
     }),
 
     createEntry: protectedProcedure
