@@ -23,9 +23,11 @@ export default function NavBar() {
               <Link href="/createTodo">Create Todo</Link>
             </button>} */}
           </li>
-          <li>
-            <Link href="/entriesFeed">Entries Feed</Link>
-          </li>
+          {sessionData && (
+            <li>
+              <Link href="/entriesFeed">Entries Feed</Link>
+            </li>
+          )}
           <li>
             {!sessionData && (
               <button

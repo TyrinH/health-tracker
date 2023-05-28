@@ -19,10 +19,7 @@ const Home: NextPage = () => {
     authorId: string;
   };
 
-  const {
-    register,
-    handleSubmit,
-  } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     data.author = sessionData?.user?.name || "Anonymous";
     data.authorId = sessionData?.user?.id || "Anonymous";
@@ -30,25 +27,26 @@ const Home: NextPage = () => {
     await router.push("/entriesFeed");
   };
 
-  return (
-    <>
-      <Head>
-        <title>Health tracker</title>
-        <meta name="description" />
-      </Head>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Health Tracker
-          </h1>
+  const EntryCreateForm = () => {
+    return (
+      <div className="card w-96 bg-base-100 shadow-xl">
+        {/* <figure>
+      <img
+        src="/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
+        alt="Shoes"
+      />
+    </figure> */}
+        <div className="card-body">
+          <h2 className="card-title">Add a new entry</h2>
+          {/* <p>If a dog chews shoes whose shoes does he choose?</p> */}
           <form className="form-control" onSubmit={handleSubmit(onSubmit)}>
+            <label className="label">
+              <span className="label-text">What was your mood today?</span>
+            </label>
             <select
               className="select-bordered select w-full max-w-xs"
-              {...register("mood")}
+              {...register("mood", { required: true })}
             >
-              <option disabled selected>
-                How are you feeling today?
-              </option>
               <option>Happy</option>
               <option>Meh</option>
               <option>Sad</option>
@@ -70,10 +68,28 @@ const Home: NextPage = () => {
               {...register("notes")}
             />
 
-            <button className="btn-success btn mt-4">Submit</button>
+            <div className="card-actions justify-end">
+              <button className="btn-success btn mt-4">Submit</button>
+            </div>
           </form>
-          <div className="flex flex-col items-center gap-2">
-          </div>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <>
+      <Head>
+        <title>Health tracker</title>
+        <meta name="description" />
+      </Head>
+      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
+          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
+            Health Tracker
+          </h1>
+          {sessionData ? <EntryCreateForm /> : <p>Sign in to add an entry</p>}
+          <div className="flex flex-col items-center gap-2"></div>
         </div>
       </main>
     </>
@@ -81,4 +97,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
