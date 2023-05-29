@@ -6,6 +6,13 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 
 import { api } from "~/utils/api";
 import router from "next/router";
+import dayjs from "dayjs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFaceFrown,
+  faFaceMeh,
+  faFaceSmile,
+} from "@fortawesome/free-regular-svg-icons";
 
 const Home: NextPage = () => {
   const createEntry = api.entries.createEntry.useMutation();
@@ -19,14 +26,15 @@ const Home: NextPage = () => {
     authorId: string;
   };
 
-  const { register, handleSubmit } = useForm<Inputs>();
+  const { register, handleSubmit, watch } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     data.author = sessionData?.user?.name || "Anonymous";
     data.authorId = sessionData?.user?.id || "Anonymous";
     await createEntry.mutateAsync(data);
     await router.push("/entriesFeed");
   };
-
+  const mood = watch("mood");
+  const isSick = watch("isSick");
   const EntryCreateForm = () => {
     return (
       <div className="card w-96 bg-base-100 shadow-xl">
@@ -37,7 +45,36 @@ const Home: NextPage = () => {
       />
     </figure> */}
         <div className="card-body">
-          <h2 className="card-title">Add a new entry</h2>
+          <div className="flex">
+          <h2 className="card-title inline-block">Add a new entry</h2>
+          <h2 className="card-title inline-block px-4">{dayjs().format("MMMM D, YYYY")}</h2>
+          </div>
+          <div className="flex">
+            <p className="inline-block">
+              {mood === "Happy" ? (
+                <FontAwesomeIcon
+                  icon={faFaceSmile}
+                  size="4x"
+                  style={{ color: "#1cf000" }}
+                />
+              ) : mood === "Meh" ? (
+                <FontAwesomeIcon
+                  icon={faFaceMeh}
+                  size="4x"
+                  style={{ color: "#ffe438" }}
+                />
+              ) : mood === "Sad" ? (
+                <FontAwesomeIcon
+                  icon={faFaceFrown}
+                  size="4x"
+                  style={{ color: "#ff0000" }}
+                />
+              ) : (
+                ""
+              )}
+            </p>
+            {isSick && <p className="inline-block text-6xl font-bold">😷</p>}
+          </div>
           {/* <p>If a dog chews shoes whose shoes does he choose?</p> */}
           <form className="form-control" onSubmit={handleSubmit(onSubmit)}>
             <label className="label">
@@ -56,7 +93,7 @@ const Home: NextPage = () => {
                 <span className="label-text">Were you sick today?</span>
                 <input
                   placeholder="isSick"
-                  className="toggle"
+                  className="checkbox"
                   type="checkbox"
                   {...register("isSick")}
                 />

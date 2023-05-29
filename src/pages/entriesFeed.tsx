@@ -85,7 +85,7 @@ const EntriesFeed: NextPage = () => {
           </h2>
           <p>{entry.notes}</p>
           <div className="card-actions justify-end">
-            {/* <button className="btn-primary btn">Buy Now</button> */}
+            {/* <button className="btn-error btn">Buy Now</button> */}
           </div>
         </div>
       </div>
