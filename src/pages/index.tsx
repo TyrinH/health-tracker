@@ -46,8 +46,10 @@ const Home: NextPage = () => {
     </figure> */}
         <div className="card-body">
           <div className="flex">
-          <h2 className="card-title inline-block">Add a new entry</h2>
-          <h2 className="card-title inline-block px-4">{dayjs().format("MMMM D, YYYY")}</h2>
+            <h2 className="card-title inline-block">Add a new entry</h2>
+            <h2 className="card-title inline-block px-4">
+              {dayjs().format("MMMM D, YYYY")}
+            </h2>
           </div>
           <div className="flex">
             <p className="inline-block">

@@ -63,7 +63,7 @@ const EntriesFeed: NextPage = () => {
     };
 
     return (
-      <div className="card-compact card w-96 bg-base-100 shadow-xl">
+      <div className="card card-compact w-96 bg-base-100 shadow-xl">
         <div className="flex">
           <p className="card-header inline-block px-4 py-4 text-2xl font-bold">
             {entry.date.toDateString()}
