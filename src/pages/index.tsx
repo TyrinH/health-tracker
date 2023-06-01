@@ -46,10 +46,7 @@ const Home: NextPage = () => {
     </figure> */}
         <div className="card-body">
           <div className="flex">
-            <h2 className="card-title inline-block">Add a new entry</h2>
-            <h2 className="card-title inline-block px-4">
-              {dayjs().format("MMMM D, YYYY")}
-            </h2>
+            <h2 className="card-title inline-block">Add a new entry for  {dayjs().format("MMMM D, YYYY")}</h2>
           </div>
           <div className="flex">
             <p className="inline-block">
@@ -77,7 +74,6 @@ const Home: NextPage = () => {
             </p>
             {isSick && <p className="inline-block text-6xl font-bold">😷</p>}
           </div>
-          {/* <p>If a dog chews shoes whose shoes does he choose?</p> */}
           <form className="form-control" onSubmit={handleSubmit(onSubmit)}>
             <label className="label">
               <span className="label-text">What was your mood today?</span>
@@ -86,6 +82,7 @@ const Home: NextPage = () => {
               className="select-bordered select w-full max-w-xs"
               {...register("mood", { required: true })}
             >
+              <option disabled selected>Choose one</option>
               <option>Happy</option>
               <option>Meh</option>
               <option>Sad</option>
@@ -108,7 +105,7 @@ const Home: NextPage = () => {
             />
 
             <div className="card-actions justify-end">
-              <button className="btn-success btn mt-4">Submit</button>
+              <button className="btn-success btn mt-4" disabled={mood !== undefined ? false : true} >Submit</button>
             </div>
           </form>
         </div>
