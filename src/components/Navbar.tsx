@@ -121,7 +121,7 @@ export default function NavBar() {
           {sessionData && (
             <li>
               {/* The button to open modal */}
-              <label htmlFor="my_modal_6" className="btn">open modal</label>
+              <label htmlFor="my_modal_6" className="btn">Add entry</label>
 
               {/* Put this part before </body> tag */}
               <input type="checkbox" id="my_modal_6" className="modal-toggle" />
