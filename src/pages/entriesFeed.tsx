@@ -3,6 +3,7 @@ import {
   faFaceMeh,
   faFaceSmile,
 } from "@fortawesome/free-regular-svg-icons";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
@@ -21,7 +22,27 @@ const EntriesFeed: NextPage = () => {
 
   type Entry = RouterOutputs["entries"]["getAllEntries"][number];
 
+
+  
   const Card = (entry: Entry) => {
+    const EntriesActionsDropdown = () => {
+  
+      return (
+        <div className="dropdown">
+          <label tabIndex={0} className="btn-ghost btn-circle btn px-4 py-4 text-2xl font-bold">
+            <FontAwesomeIcon icon={faAngleDown} />
+          </label>
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu rounded-box w-52 bg-base-100 p-2 shadow"
+          >
+            <li>
+              <a onClick={() => void deleteEntryAction()}><span className=" text-red-600">Delete</span></a>
+            </li>
+          </ul>
+        </div>
+      );
+    }
     const moodEmoji = () => {
       if (entry.mood === "Happy") {
         return (
@@ -79,34 +100,13 @@ const EntriesFeed: NextPage = () => {
           </p>
           {entry.isSick && (
             <p className="card-header inline-block px-4 py-4 text-5xl font-bold">
-              {/* <FontAwesomeIcon icon={faHeadSideCough} size="2xl" style={{color: "#bababa",}} />
-               */}
               😷
             </p>
           )}
+          <EntriesActionsDropdown />
         </div>
         <div className="card-body">
         <div className="card-actions justify-end">
-            <button
-              className="btn-outline btn-error btn-sm btn"
-              // disabled={todo.completed}
-              onClick={() => void deleteEntryAction()}
-            >
-                            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
           </div>
           <h2 className="card-title text-3xl">
             <span className={moodStyleColor()}>{entry.mood}</span>
