@@ -132,6 +132,13 @@ export default function NavBar() {
               </div>
             </li>
           )}
+          {sessionData && (
+            <li>
+             <button className="btn-ghost btn text-xl normal-case">
+              <Link href="/stats">Stats</Link>
+            </button>
+            </li>
+          )}
           <li>
             {!sessionData && (
               <button
